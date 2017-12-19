@@ -6,10 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 public class Main implements Runnable,KeyListener {
 	
@@ -153,14 +150,7 @@ public class Main implements Runnable,KeyListener {
 	}
 	
 	
-	public static void main(String args[])
-	{
-		
-		Main obj = new Main("smash it",1000,700);
-		obj.start();
-	    //obj.run();
-		
-	}
+
 	
 
 }
