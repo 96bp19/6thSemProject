@@ -59,9 +59,9 @@ public class Main implements Runnable,KeyListener {
 		g.setColor(Color.GRAY);
 		g.fillOval(100, 100, 50, 50);
 		
-		img =display.getImage("Images\\game.jpg");
+		//img =display.getImage("Images\\game.jpg");
 		
-		g.drawImage(img, 100, 100, 200, 200, null, null);
+		//g.drawImage(img, 100, 100, 200, 200, null, null);
 		
 		bs.show();
 		
