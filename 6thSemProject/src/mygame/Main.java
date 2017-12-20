@@ -28,6 +28,9 @@ public class Main implements Runnable,KeyListener {
 	int player_xpos,player_ypos,player_height,player_width;
 	int ball_xpos,ball_ypos,ball_radius;
 	
+	int ball_xspeed,ball_yspeed;
+	int player_speed;
+	
 	public Main(String title,int width, int height)
 	{
 		
@@ -40,8 +43,15 @@ public class Main implements Runnable,KeyListener {
 		
 		player_xpos=20;
 		player_ypos=600;
-		player_height=20;
-		player_width=80;
+		player_height=40;
+		player_width=120;
+		player_speed=1;
+		
+		ball_xpos=300;
+		ball_ypos=300;
+		ball_radius=20;
+		ball_xspeed=3;
+		ball_yspeed=3;
 		
 		
 		
@@ -73,7 +83,7 @@ public class Main implements Runnable,KeyListener {
 		playerImg =display.getImage("icons\\player.png");
 		g.drawImage(playerImg, player_xpos, player_ypos, player_width, player_height, null, null);
 		
-		ballImg =display.getImage("icons\\green_ball.jpg");
+		ballImg =display.getImage("icons\\green_ball.png");
 		g.drawImage(ballImg, ball_xpos, ball_ypos, ball_radius, ball_radius, null, null);
 		
 		bs.show();
@@ -84,9 +94,30 @@ public class Main implements Runnable,KeyListener {
 	
 	//write main game logic here//
 	/////////////////////////////
-	public void Update()
+	public synchronized void Update()
 	{
+		ball_xpos=ball_xpos+ball_xspeed;
+		ball_ypos=ball_ypos+ball_yspeed;
+		System.out.println(ball_ypos);
 		
+		if(ball_xpos<=20)
+		{
+			ball_xspeed=-ball_xspeed;
+		
+		}
+		if(ball_xpos>=960)
+		{
+			ball_xspeed=-ball_xspeed;
+		}
+		
+		if(ball_ypos<=20)
+		{
+			ball_yspeed=-ball_yspeed;
+		}
+		if(ball_ypos>=660)
+		{
+			ball_yspeed=-ball_yspeed;
+		}
 	}
 	
 	public synchronized void start()
@@ -149,7 +180,7 @@ public class Main implements Runnable,KeyListener {
 	{
 		if(e.getKeyCode()==KeyEvent.VK_D)
 		{
-			if(player_xpos<=900)
+			if(player_xpos<=860)
 			{
 				player_xpos+=10;
 			}
