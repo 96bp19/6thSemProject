@@ -4,13 +4,9 @@ package mygame;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+
 public class Display
 {
 	JFrame frame;
