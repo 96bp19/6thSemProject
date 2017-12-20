@@ -13,9 +13,10 @@ public class Main implements Runnable,KeyListener {
 	
 	private Graphics g;
 	private BufferStrategy bs; // used to provide good graphical display
-	private Image ballImg=null; // used for getting image 
-	private Image playerImg =null;
-	private Image brickImg=null;
+	public Image ballImg=null; // used for getting image 
+	public Image playerImg =null;
+	public Image brickImg=null;
+	
 	
 	Thread t;
 	boolean isRunning=false;
@@ -30,6 +31,8 @@ public class Main implements Runnable,KeyListener {
 	
 	int ball_xspeed,ball_yspeed;
 	int player_speed;
+	
+	public boolean BallIsMoving=false;
 	
 	public Main(String title,int width, int height)
 	{
@@ -47,8 +50,8 @@ public class Main implements Runnable,KeyListener {
 		player_width=120;
 		player_speed=1;
 		
-		ball_xpos=300;
-		ball_ypos=300;
+		ball_xpos=200;
+		ball_ypos=585;
 		ball_radius=20;
 		ball_xspeed=3;
 		ball_yspeed=3;
@@ -77,8 +80,7 @@ public class Main implements Runnable,KeyListener {
 		g=bs.getDrawGraphics(); // graphics is initialized
 		g.clearRect(0, 0, width, height); // clears whole screen
 		
-		g.setColor(Color.GRAY);
-		g.fillOval(100, 100, 50, 50);
+		
 		
 		playerImg =display.getImage("icons\\player.png");
 		g.drawImage(playerImg, player_xpos, player_ypos, player_width, player_height, null, null);
@@ -96,55 +98,30 @@ public class Main implements Runnable,KeyListener {
 	/////////////////////////////
 	public synchronized void Update()
 	{
-		ball_xpos=ball_xpos+ball_xspeed;
-		ball_ypos=ball_ypos+ball_yspeed;
-		System.out.println(ball_ypos);
+		moveBall();
 		
-		if(ball_xpos<=20)
-		{
-			ball_xspeed=-ball_xspeed;
-		
-		}
-		if(ball_xpos>=960)
-		{
-			ball_xspeed=-ball_xspeed;
-		}
-		
-		if(ball_ypos<=20)
-		{
-			ball_yspeed=-ball_yspeed;
-		}
-		if(ball_ypos>=660)
-		{
-			ball_yspeed=-ball_yspeed;
-		}
+		int distance =calculateDistance(player_xpos+player_width/2,player_ypos+player_height/2,ball_xpos,ball_ypos);
+		System.out.println(distance);
 	}
 	
-	public synchronized void start()
+    int calculateDistance(int x1, int y1, int x2, int y2)
 	{
-		if(isRunning)
-			return;
-		isRunning=true;
-		t=new Thread(this);
-		t.start();
+	    int x=(x2-x1)*(x2-x1);
+	    int y= (y2-y1)*(y2-y1);
+	    
+	    
+		
+		return   (int) Math.sqrt(x+y);
+		
+		
 	}
-	public synchronized void stop()
+	
+	void calculateCollision()
 	{
-		if(!isRunning)
-		return;
 		
-		isRunning=false;
-		try 
-		{
-			t.join();
-		} 
-		
-		catch (InterruptedException e) 
-		{
-			
-			e.printStackTrace();
-		}
 	}
+	
+	
 
 	
 	public synchronized void run()
@@ -193,6 +170,26 @@ public class Main implements Runnable,KeyListener {
 				player_xpos-=10;
 			}
 		}
+		
+		
+		if(e.getKeyCode()==KeyEvent.VK_LEFT)
+		{
+			ball_xpos--;
+		}
+		
+		if(e.getKeyCode()==KeyEvent.VK_RIGHT)
+		{
+			ball_xpos++;
+		}
+		if(e.getKeyCode()==KeyEvent.VK_DOWN)
+		{
+			ball_ypos++;
+		}
+		
+		if(e.getKeyCode()==KeyEvent.VK_UP)
+		{
+			ball_ypos--;
+		}
 	}
 	
 	public void keyReleased(KeyEvent e) 
@@ -207,8 +204,62 @@ public class Main implements Runnable,KeyListener {
 		
 	}
 	
+	public void moveBall()
+	{
+		if(BallIsMoving)
+		{
+			ball_xpos=ball_xpos+ball_xspeed;
+			ball_ypos=ball_ypos+ball_yspeed;
+		}
+		
+		
+		if(ball_xpos<=20)
+		{
+			ball_xspeed=-ball_xspeed;
+		
+		}
+		if(ball_xpos>=960)
+		{
+			ball_xspeed=-ball_xspeed;
+		}
+		
+		if(ball_ypos<=20)
+		{
+			ball_yspeed=-ball_yspeed;
+		}
+		if(ball_ypos>=660)
+		{
+			ball_yspeed=-ball_yspeed;
+		}
+	}
 	
-
+	
+	public synchronized void start()
+	{
+		if(isRunning)
+			return;
+		isRunning=true;
+		t=new Thread(this);
+		t.start();
+	}
+	
+	public synchronized void stop()
+	{
+		if(!isRunning)
+		return;
+		
+		isRunning=false;
+		try 
+		{
+			t.join();
+		} 
+		
+		catch (InterruptedException e) 
+		{
+			
+			e.printStackTrace();
+		}
+	}
 	
 
 }
