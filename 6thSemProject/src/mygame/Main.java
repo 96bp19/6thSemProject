@@ -13,7 +13,9 @@ public class Main implements Runnable,KeyListener {
 	
 	private Graphics g;
 	private BufferStrategy bs; // used to provide good graphical display
-	private Image img=null; // used for getting image 
+	private Image ballImg=null; // used for getting image 
+	private Image playerImg =null;
+	private Image brickImg=null;
 	
 	Thread t;
 	boolean isRunning=false;
@@ -22,6 +24,9 @@ public class Main implements Runnable,KeyListener {
 	private Display display; // it is just the class we created 
 	public  String title;
 	public int width,height;
+	
+	int player_xpos,player_ypos,player_height,player_width;
+	int ball_xpos,ball_ypos,ball_radius;
 	
 	public Main(String title,int width, int height)
 	{
@@ -32,6 +37,12 @@ public class Main implements Runnable,KeyListener {
 		
 		
 		display=new Display(title,width,height);
+		
+		player_xpos=20;
+		player_ypos=600;
+		player_height=20;
+		player_width=80;
+		
 		
 		
 			
@@ -59,9 +70,11 @@ public class Main implements Runnable,KeyListener {
 		g.setColor(Color.GRAY);
 		g.fillOval(100, 100, 50, 50);
 		
-		img =display.getImage("icons\\game.jpg");
+		playerImg =display.getImage("icons\\player.png");
+		g.drawImage(playerImg, player_xpos, player_ypos, player_width, player_height, null, null);
 		
-		g.drawImage(img, 100, 100, 200, 200, null, null);
+		ballImg =display.getImage("icons\\green_ball.jpg");
+		g.drawImage(ballImg, ball_xpos, ball_ypos, ball_radius, ball_radius, null, null);
 		
 		bs.show();
 		
@@ -134,7 +147,21 @@ public class Main implements Runnable,KeyListener {
 	
 	public void keyPressed(KeyEvent e)
 	{
+		if(e.getKeyCode()==KeyEvent.VK_D)
+		{
+			if(player_xpos<=900)
+			{
+				player_xpos+=10;
+			}
+		}
 		
+		if(e.getKeyCode()==KeyEvent.VK_A)
+		{
+			if(player_xpos>=20)
+			{
+				player_xpos-=10;
+			}
+		}
 	}
 	
 	public void keyReleased(KeyEvent e) 

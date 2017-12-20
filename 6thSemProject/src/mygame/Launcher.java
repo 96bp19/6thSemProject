@@ -7,9 +7,7 @@ public class Launcher {
 		
 		Main obj = new Main("smash it",1000,700);
 		obj.start();
-	    //obj.run();
-		//chak
-		//hello   papa
+	   
 		
 	}
 }

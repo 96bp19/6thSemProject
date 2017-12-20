@@ -16,9 +16,14 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>src/mygame/icons/game.jpg</name>
+			<name>src/mygame/icons/green_ball.jpg</name>
 			<type>1</type>
-			<location>C:/Users/Binaya/Downloads/game.jpg</location>
+			<location>C:/Users/Binaya/Downloads/green_ball.jpg</location>
+		</link>
+		<link>
+			<name>src/mygame/icons/player.png</name>
+			<type>1</type>
+			<location>C:/Users/Binaya/Downloads/player.png</location>
 		</link>
 	</linkedResources>
 </projectDescription>
