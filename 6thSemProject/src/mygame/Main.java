@@ -4,7 +4,6 @@ import java.awt.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import java.awt.image.BufferStrategy;
 
 
@@ -33,6 +32,10 @@ public class Main implements Runnable,KeyListener {
 	int player_speed;
 	
 	public boolean BallIsMoving=false;
+	public boolean CollisionDetected=false;
+	
+	int count =0;
+	
 	
 	public Main(String title,int width, int height)
 	{
@@ -47,7 +50,7 @@ public class Main implements Runnable,KeyListener {
 		player_xpos=20;
 		player_ypos=600;
 		player_height=40;
-		player_width=120;
+		player_width=100;
 		player_speed=1;
 		
 		ball_xpos=200;
@@ -100,8 +103,7 @@ public class Main implements Runnable,KeyListener {
 	{
 		moveBall();
 		
-		int distance =calculateDistance(player_xpos+player_width/2,player_ypos+player_height/2,ball_xpos,ball_ypos);
-		System.out.println(distance);
+		calculateDistance(player_xpos+player_width/2,player_ypos+player_height/2,ball_xpos,ball_ypos);
 	}
 	
     int calculateDistance(int x1, int y1, int x2, int y2)
@@ -109,18 +111,16 @@ public class Main implements Runnable,KeyListener {
 	    int x=(x2-x1)*(x2-x1);
 	    int y= (y2-y1)*(y2-y1);
 	    
+	    System.out.println("x1 : "+x1+"    y1 : "+y1);
+	    System.out.println(" x2 : "+x2+"    y2 : "+y2);
 	    
-		
-		return   (int) Math.sqrt(x+y);
-		
-		
-	}
-	
-	void calculateCollision()
-	{
-		
-	}
-	
+	    int distance =(int) Math.sqrt(x+y);
+	    
+	    calculateCollision(x1,y1,x2,y2,distance);
+	    
+	    return  distance;
+	    
+	  }
 	
 
 	
@@ -149,8 +149,7 @@ public class Main implements Runnable,KeyListener {
 		 }
 		 
 		 stop();
-		System.out.println("hello");
-		
+	
 	}
 	
 	public void keyPressed(KeyEvent e)
@@ -190,6 +189,15 @@ public class Main implements Runnable,KeyListener {
 		{
 			ball_ypos--;
 		}
+		
+		if(!BallIsMoving)
+		{
+			if(e.getKeyCode()==KeyEvent.VK_SPACE)
+			{
+				BallIsMoving=true;
+			}
+		}
+		
 	}
 	
 	public void keyReleased(KeyEvent e) 
@@ -206,31 +214,63 @@ public class Main implements Runnable,KeyListener {
 	
 	public void moveBall()
 	{
+	
 		if(BallIsMoving)
 		{
+			
 			ball_xpos=ball_xpos+ball_xspeed;
 			ball_ypos=ball_ypos+ball_yspeed;
+			
 		}
 		
 		
 		if(ball_xpos<=20)
 		{
 			ball_xspeed=-ball_xspeed;
+			count=0;
 		
 		}
 		if(ball_xpos>=960)
 		{
 			ball_xspeed=-ball_xspeed;
+			count=0;
 		}
 		
 		if(ball_ypos<=20)
 		{
 			ball_yspeed=-ball_yspeed;
+			count=0;
 		}
 		if(ball_ypos>=660)
 		{
 			ball_yspeed=-ball_yspeed;
+			count=0;
 		}
+		
+		
+		
+		if(CollisionDetected && count==0)
+		{
+			
+			
+			CollisionDetected=false;
+			if(ball_ypos>player_ypos)
+			{
+				ball_xspeed=-ball_xspeed;
+			}
+			else if( ball_ypos<player_ypos)
+			{
+				ball_yspeed =-ball_yspeed;
+			}
+			
+			count++;
+			
+			
+			
+		}
+		
+	
+		
 	}
 	
 	
@@ -259,6 +299,93 @@ public class Main implements Runnable,KeyListener {
 			
 			e.printStackTrace();
 		}
+	}
+	
+	void calculateCollision(int x1,int y1, int x2, int y2, int distance)
+	{
+		 if(x1<x2 && distance<54 && y2-y1 <40)
+		    {
+		    	if(y1>y2)
+		    	{
+		    		if(y1-y2 <40)
+		    		{
+		    			if(!CollisionDetected)
+					    {
+					    	CollisionDetected =true;
+					    }
+		    		}
+		    		else
+	    				CollisionDetected =false;
+		    	}
+		    	else if(y2>y1)
+		    	{
+		    		if(y2-y1 <20)
+		    		{
+		    			if(!CollisionDetected)
+					    {
+					    	CollisionDetected =true;
+					    }
+		    		}
+		    		else
+	    				CollisionDetected =false;
+		    	}
+		    	
+				    
+		    	
+		    }
+		    
+		    else if(x1>x2 && distance<70 )
+		    {
+		    	
+		    	if(y1>y2)
+		    	{
+		    		if(y1-y2 <40)
+		    		{
+		    			if(!CollisionDetected)
+					    {
+					    	CollisionDetected =true;
+					    }
+		    		}
+		    		else
+		    			CollisionDetected =false;
+		    			
+		    	}
+		    	else if(y2>y1)
+		    	{
+		    		if(y2-y1 <20)
+		    		{
+		    			if(!CollisionDetected)
+					    {
+					    	CollisionDetected =true;
+					    }
+		    			
+		    				
+		    		}
+		    		else
+	    				CollisionDetected =false;
+		    	}
+				 
+		    	
+		    }
+		    else if(x1==x2 && distance <40)
+		    {
+		    	  {
+		  	    	
+		  	    	
+					    if(!CollisionDetected)
+					    {
+					    	CollisionDetected =true;
+					    }
+			    	
+			    }
+		    }
+		    	
+		   
+		    
+		    else 
+		    {
+		    	CollisionDetected =false;
+		    }
 	}
 	
 

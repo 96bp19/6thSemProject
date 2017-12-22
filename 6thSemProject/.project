@@ -25,5 +25,10 @@
 			<type>1</type>
 			<location>C:/Users/Binaya/Downloads/player.png</location>
 		</link>
+		<link>
+			<name>src/mygame/icons/players.png</name>
+			<type>1</type>
+			<location>C:/Users/Binaya/Downloads/players.png</location>
+		</link>
 	</linkedResources>
 </projectDescription>
