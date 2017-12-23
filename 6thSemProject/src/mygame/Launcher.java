@@ -7,9 +7,7 @@ public class Launcher {
 		
 		Main obj1 = new Main("smash it",1000,700);
 		obj1.start();
-		
-		
-	    
+					    
 	   
 		
 	}
