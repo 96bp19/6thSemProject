@@ -14,10 +14,13 @@ public class Main implements Runnable,KeyListener {
 	private BufferStrategy bs; // used to provide good graphical display
 	public Image ballImg=null; // used for getting image 
 	public Image playerImg =null;
+	public Image playerImg2=null;
 	public Image brickImg=null;
 	
 	
-	Thread t;
+	
+	
+	Thread t,t1,t2;
 	boolean isRunning=false;
 	
 	
@@ -36,6 +39,19 @@ public class Main implements Runnable,KeyListener {
 	
 	int count =0;
 	
+	/*public Main()
+	{
+		player_xpos=20;
+		player_ypos=600;
+		player_height=40;
+		player_width=100;
+		player_speed=1;
+		
+		t1=new Thread();
+		t2=new Thread();
+		
+	}*/
+	
 	
 	public Main(String title,int width, int height)
 	{
@@ -45,13 +61,18 @@ public class Main implements Runnable,KeyListener {
 		this.height=height;
 		
 		
-		display=new Display(title,width,height);
+		    display=new Display(title,width,height);
 		
-		player_xpos=20;
-		player_ypos=600;
-		player_height=40;
-		player_width=100;
-		player_speed=1;
+		
+		 
+	
+		
+			player_xpos=20;
+			player_ypos=600;
+			player_height=40;
+			player_width=100;
+			player_speed=1;
+		
 		
 		ball_xpos=200;
 		ball_ypos=585;
@@ -65,6 +86,8 @@ public class Main implements Runnable,KeyListener {
 		
 		display.getCanvas().addKeyListener(this);
 		display.getCanvas().setFocusable(true);
+		
+		
 	}
 	
 	// write graphics related code here 
@@ -83,9 +106,14 @@ public class Main implements Runnable,KeyListener {
 		g=bs.getDrawGraphics(); // graphics is initialized
 		g.clearRect(0, 0, width, height); // clears whole screen
 		
+		playerImg=display.getImage("icons\\player.png");
 		
+		//*playerImg2=display.getImage("icons\\player.png");
+		//g.drawImage(playerImg, 100,100, player_width, player_height, null, null);
 		
-		playerImg =display.getImage("icons\\player.png");
+	
+		
+		playerImg=display.getImage("icons\\player.png");
 		g.drawImage(playerImg, player_xpos, player_ypos, player_width, player_height, null, null);
 		
 		ballImg =display.getImage("icons\\green_ball.png");
@@ -102,8 +130,11 @@ public class Main implements Runnable,KeyListener {
 	public synchronized void Update()
 	{
 		moveBall();
-		
+	
 		calculateDistance(player_xpos+player_width/2,player_ypos+player_height/2,ball_xpos,ball_ypos);
+		
+		if(CollisionDetected)
+		System.out.println("collision detected");
 	}
 	
     int calculateDistance(int x1, int y1, int x2, int y2)
@@ -111,13 +142,14 @@ public class Main implements Runnable,KeyListener {
 	    int x=(x2-x1)*(x2-x1);
 	    int y= (y2-y1)*(y2-y1);
 	    
-	    System.out.println("x1 : "+x1+"    y1 : "+y1);
-	    System.out.println(" x2 : "+x2+"    y2 : "+y2);
+	   // System.out.println("x1 : "+x1+"    y1 : "+y1);
+	    //System.out.println(" x2 : "+x2+"    y2 : "+y2);
 	    
 	    int distance =(int) Math.sqrt(x+y);
 	    
 	    calculateCollision(x1,y1,x2,y2,distance);
 	    
+	    System.out.println("Distance : "+distance);
 	    return  distance;
 	    
 	  }
@@ -250,18 +282,25 @@ public class Main implements Runnable,KeyListener {
 		
 		
 		if(CollisionDetected && count==0)
-		{
-			
+		{	
+		
 			
 			CollisionDetected=false;
-			if(ball_ypos>player_ypos)
+			if(ball_ypos-player_ypos >15)
 			{
 				ball_xspeed=-ball_xspeed;
+				//ball_yspeed =-ball_yspeed;
+			}
+			else if(ball_ypos-player_ypos <15)
+			{
+				
+				ball_yspeed =-ball_yspeed;
 			}
 			else if( ball_ypos<player_ypos)
 			{
 				ball_yspeed =-ball_yspeed;
 			}
+			
 			
 			count++;
 			

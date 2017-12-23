@@ -16,8 +16,8 @@ public class Display
 	public  Display(String title, int width ,int height)
 	{
 		
-		this.height=700;
-		this.width=1000;
+		this.height=height;
+		this.width=width;
 		this.title=title;
 		
 		displayFrame();
